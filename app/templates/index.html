@@ -1,0 +1,28 @@
+<!-- index.html -->
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block content %}
+
+<div class="web-title">Steam-ify your Downloadable Contents</div>
+<div class="tag-line">Predict your game's expansion-pack success</div>
+<div class="title-desc">(Not sure what this app does? Click <a href="about">here</a> for more info)</div>
+
+<div class="form-container form-user">
+    <form action="/game" method="GET">
+        <div class="form-group">
+            <input type="text" id="user_id" name="user_id" placeholder="Enter steam ID" />
+         </div>
+        <div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <p class="alert">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <button type="submit" class="btn btn-default btn-lg">Go to step 2</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

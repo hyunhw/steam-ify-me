@@ -1,0 +1,40 @@
+<!-- index.html -->
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block content %}
+
+<h1>It's about to get Steam-y!</h1>
+
+<div class="form-container form-game">
+    <form action="summary" method="GET">
+        <input type="hidden" name="user_id" value="{{user_id}}" />
+
+        <div class="form-group form-select-game">
+            <div class="control-group" style="background-color: inherit;">
+                <div class="select">
+                    <select name="game_id" required>
+                        <option value="">Select your game to expand</option>
+                        {% for key, game in games.iterrows() %}
+                        <option value="{{game['id']}}">{{ game['title']}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="select__arrow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-dlc-price">
+            <label for="dlc_price">Expansion (DLC) price:</label><br/>
+            <input type="text" name="dlc_price" placeholder="e.g. 4.99" required/>
+        </div>
+
+        <div class="form-group form-lag-month">
+            <label for="dlc_price">Months since original game release:</label><br/>
+            <input type="text" name="dlc_lag_time" placeholder="e.g. 2" required/>
+        </div>
+
+        <button type="submit" class="btn btn-default btn-lg">Predict like!</button>
+    </form>
+</div>
+
+{% endblock %}

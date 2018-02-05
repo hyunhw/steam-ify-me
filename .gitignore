@@ -1,0 +1,6 @@
+.DS_Store
+games_all.json
+user_games.txt
+__pycache__
+*.pkl
+config.py

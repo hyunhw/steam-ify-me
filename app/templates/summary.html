@@ -1,0 +1,126 @@
+<!-- index.html -->
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block content %}
+<div>
+    <!-- prediction -->
+    <div class="prediction">
+        <h1 style="font-style: italic">Zoltar predicts ...</h1>
+        <h2 style="font-family: 'Cutive Mono', monospace;">The user will <span style="font-weight:bold">{{'like' if prediction else 'dislike'}}</span> the expansion!</h2>
+    </div>
+
+    <!-- comments -->
+    <div class="comments">
+        <h2 style="font-style: italic; font-family: 'Alegreya Sans', sans-serif;">In general, users liked the content when ...</h2>
+        <p class="summary-comments">
+        1. The original game price was lower<br/>
+        2. The user played the original game a lot <br/>
+        3. The user owned a lot of games with genres popular on Steam (Action, Adventure, etc)
+        </p>
+    </div>
+
+    <hr style="border-color: rgba(172, 172, 172, 0.3)">
+
+    <!-- Bootstrap cards -->
+    <div class="summary-cards">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card border-dark mb-3 center_block" style="max-width: 50rem; margin-left:auto">
+                    <div class="card-header">User Info</div>
+                    <div class="card-body text-dark">
+                        <h5 class="card-title">Playtime on your original game: {{num_hours_played}} hrs</h5>
+                        <h5 class="card-title">Average price of owned games: ${{avg_price}}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-dark mb-3 center_block" style="max-width: 50rem; margin-left:auto">
+                    <div class="card-header">Your Original Game Info</div>
+                    <div class="card-body text-dark">
+                        <h5 class="card-title">Genre: {{game_genre}} </h5>
+                        <h5 class="card-title">Game price: ${{game_price}} </h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- chart js -->
+    <div class="chartjs">
+        <div class="card-header">
+            <p>How representative are the user's games of the top 10 genres on Steam?</p>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="margin-left:auto">
+                <p stype="text-align:center">Top 5 Genres Owned by User</p>
+                <canvas id="genre" style=" width: 400px; height: 250px; margin-left:auto"></canvas>
+            </div>
+            <div class="col-md-6" style="margin-left:auto">
+                <p>Top 10 Genres on Steam</p>
+                <canvas id="spec" style=" width: 400px; height: 250px; margin-left:auto"></canvas>
+           </div>
+        </div>
+    </div>
+
+    <script>
+        var genre_ctx = document.getElementById("genre").getContext('2d');
+        var genreChart = new Chart(genre_ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [{% for item in genre %} "{{item}}", {% endfor %}],
+                datasets: [{
+                    label: 'owned',
+                    data: [{% for item in genre_count %} {{item}}, {% endfor %}],
+                    backgroundColor: [
+                    {% for item in genre_color%} "{{item}}", {% endfor %}
+                    ],
+                    borderColor: [
+                    {% for item in genre_color%} "{{item}}", {% endfor %}
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: true
+                }
+            }
+        });
+        var spec_ctx = document.getElementById("spec").getContext('2d');
+        var specChart = new Chart(spec_ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [{% for item in spec %} "{{item}}", {% endfor %}],
+                datasets: [{
+                    label: 'owned',
+                    data: [{% for item in spec_count %} {{item}}, {% endfor %}],
+                    backgroundColor: [
+                    {% for item in steam_color%} "{{item}}", {% endfor %}
+                    ],
+                    borderColor: [
+                    {% for item in steam_color%} "{{item}}", {% endfor %}
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: true
+                }
+            }
+        });
+    </script>
+
+    <!-- tips -->
+    <!-- <div class="tips"> -->
+    <!--     <h2 style="font-style: italic; font-family: 'Alegreya Sans', sans-serif;">Interesting facts</h2> -->
+    <!--     <p class="summary-comments"> -->
+    <!--     1. The difference in median parent game price for liked/disliked DLCs is $5<br/> -->
+    <!--     2. People left more positive reviews for contents released after ~6 months of the parent game -->
+    <!--     </p> -->
+    <!-- </div> -->
+
+</div>
+{% endblock %}
