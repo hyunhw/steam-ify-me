@@ -22,10 +22,10 @@ user = app.config['DB_USERNAME']
 pw = app.config['DB_PASSWORD']
 
 # make a connection to the AWS RDS
-#conn = psycopg2.connect(f"host={host} dbname={dbname} user={user} password={pw}")
+conn = psycopg2.connect(f"host={host} dbname={dbname} user={user} password={pw}")
 
 # make a connection to the local database
-conn = psycopg2.connect(f"host=localhost dbname=steam_prod user={user}")
+#  conn = psycopg2.connect(f"host=localhost dbname=steam_prod user={user}")
 
 @app.route('/')
 @app.route('/index')
@@ -37,7 +37,7 @@ def game():
     # get incoming request data
     user_id = request.args.get('user_id')
 
-    # if user entered vanity url, hit API and fetch steamID64  # offline
+    # if user entered vanity url, hit API and fetch steamID64
     if len(user_id) != 17:
         user_id = get_user_id64(user_id)
 
@@ -48,7 +48,6 @@ def game():
     except:
         flash('Oops! That Steam ID does not exist')
         return redirect(url_for('index'))
-    #  game_ids = '4000, 220, 320, 340, 360, 380, 400, 420, 3590'
 
 
     try:
@@ -126,7 +125,6 @@ def summary():
         prediction = 1
     else:
         prediction = 0
-    #  prediction = '%.2f'%(y_pred[0,1])
 
     # get viz data
     genre, genre_count = get_top_genre(game_metadata_sum)
@@ -150,14 +148,3 @@ def summary():
 @app.route('/about')
 def about():
     return render_template("about.html")
-
-
-@app.route('/data')
-def data():
-    df = pd.read_csv(os.path.join(APP_STATIC, 'data/data.csv'))
-    df.drop(columns='Open', inplace=True)
-    chart_data = df.to_dict(orient='records')
-    chart_data = json.dumps(chart_data, indent=2)
-    data = {'chart_data': chart_data }
-
-    return render_template("data.html", data=data)
