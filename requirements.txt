@@ -64,7 +64,7 @@ odo==0.5.1
 packaging==16.8
 pandas==0.21.0
 pandocfilters==1.4.2
-paramiko==2.1.2
+paramiko==2.10.1
 parsel==1.2.0
 parso==0.1.1
 partd==0.3.8
