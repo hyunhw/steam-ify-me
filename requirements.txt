@@ -22,7 +22,7 @@ Cython==0.27.3
 dask==0.16.1
 datashape==0.5.4
 decorator==4.1.2
-distributed==1.20.2
+distributed==2021.10.0
 docutils==0.13.1
 entrypoints==0.2.3
 Flask==0.12.2
